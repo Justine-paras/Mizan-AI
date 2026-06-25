@@ -1,0 +1,23 @@
+Date,Description,Category,Vendor/Client,Amount (AED),VAT Amount (AED),Total (AED),VAT TRN,Recoverable
+2024-01-02,Cloud hosting - AWS (mixed personal/business),IT/Software,Amazon Web Services,2800.00,140.00,2940.00,,Partial
+2024-01-05,Laptop purchase for developer,Equipment,Jumbo Electronics,6500.00,325.00,6825.00,100112233445566,Yes
+2024-01-08,Coworking space membership,Rent,WeWork Dubai,5500.00,275.00,5775.00,100223344556677,Yes
+2024-01-10,Software licenses - Microsoft 365,IT/Software,Microsoft Corporation,1200.00,60.00,1260.00,,Yes
+2024-01-12,Business flight - consultant travel to Abu Dhabi,Travel,Air Arabia,890.00,44.50,934.50,100334455667788,Yes
+2024-01-14,Client entertainment - business lunch,Entertainment,Zuma Restaurant,3200.00,160.00,3360.00,100445566778899,No
+2024-01-17,Freelancer payment - graphic design,Professional Fees,Freelance,4500.00,0.00,4500.00,,No
+2024-01-20,Website domain and SSL certificate,IT/Software,GoDaddy,350.00,17.50,367.50,,Yes
+2024-01-22,Legal consultation fees,Professional Fees,Al Tamimi & Company,8500.00,425.00,8925.00,100556677889900,Yes
+2024-01-25,Team outing - entertainment park tickets,Staff Welfare,IMG Worlds of Adventure,2100.00,105.00,2205.00,100667788990011,No
+2024-01-28,Conference sponsorship - GITEX Tech Week,Marketing,DWTC,18000.00,900.00,18900.00,100778899001122,Yes
+2024-02-01,Zoom Pro subscription,Communication,Zoom Video,480.00,24.00,504.00,,Yes
+2024-02-05,Notion team workspace,IT/Software,Notion Labs,600.00,30.00,630.00,,Yes
+2024-02-08,Staff training - cybersecurity certification,Training,SANS Institute,12000.00,600.00,12600.00,,Yes
+2024-02-12,Client gift - luxury hampers,Gifts,Bateel International,3600.00,180.00,3780.00,100889900112233,No
+2024-02-15,Mobile phone handsets x4,Equipment,Virgin Megastore,11200.00,560.00,11760.00,100990011223344,Partial
+2024-02-18,UAE Visa processing fees for staff,HR,Immigration Authority,7200.00,0.00,7200.00,,No
+2024-02-22,Slack Business subscription,IT/Software,Slack Technologies,960.00,48.00,1008.00,,Yes
+2024-02-25,Annual audit fees - external auditor,Professional Fees,Deloitte UAE,22000.00,1100.00,23100.00,100001122334455,Yes
+2024-02-28,Personal Amazon purchase - owner's home office chair,Personal,Amazon,1500.00,75.00,1575.00,,No
+2024-03-03,HubSpot CRM subscription,IT/Software,HubSpot,4200.00,210.00,4410.00,,Yes
+2024-03-06,Network setup - office routers,Equipment,Axiom Telecom,3800.00,190.00,3990.00,100112233445566,Yes

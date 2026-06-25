@@ -1,0 +1,25 @@
+Date,Description,Category,Vendor/Supplier,Amount (AED),VAT Amount (AED),Total (AED),VAT TRN,Recoverable
+2024-01-02,Inventory purchase - electronics accessories,Stock,Techland Global FZE,45000.00,2250.00,47250.00,100998877665544,Yes
+2024-01-04,Warehouse rent - Jebel Ali zone,Rent,JAFZA Properties,28000.00,1400.00,29400.00,100887766554433,Yes
+2024-01-07,Packaging materials - boxes and tape,Consumables,Emirates Paper Supplies,3200.00,160.00,3360.00,100776655443322,Yes
+2024-01-10,Import customs duty,Regulatory,Federal Customs Authority,8900.00,0.00,8900.00,,No
+2024-01-12,Staff salaries - 5 employees,Payroll,Internal,62000.00,0.00,62000.00,,No
+2024-01-15,DEWA - Warehouse electricity,Utilities,DEWA,6800.00,340.00,7140.00,100012345678901,Yes
+2024-01-18,Forklift maintenance service,Equipment Maintenance,Al Futtaim Engineering,4500.00,225.00,4725.00,100665544332211,Yes
+2024-01-20,Delivery van fuel,Transport,ADNOC,7200.00,360.00,7560.00,100554433221100,Yes
+2024-01-22,POS system software renewal,IT/Software,Revel Systems,2800.00,140.00,2940.00,,Yes
+2024-01-25,Owner's personal car - partial business use claim,Transport,Self,0.00,0.00,0.00,,Partial
+2024-01-28,Trade show display materials - GITEX Shopper,Marketing,Dubai World Trade Centre,9500.00,475.00,9975.00,100778899001122,Yes
+2024-02-01,Inventory - mobile phone accessories,Stock,Shenzhen Global Imports,38000.00,1900.00,39900.00,100443322110099,Yes
+2024-02-05,Third-party logistics fees,Transport,Aramex UAE,5400.00,270.00,5670.00,100332211009988,Yes
+2024-02-08,Office furniture - showroom,Equipment,IKEA Business,12000.00,600.00,12600.00,100221100998877,Yes
+2024-02-10,Credit card processing fees,Bank Charges,Mashreq Bank,1800.00,0.00,1800.00,,No
+2024-02-12,Online marketplace fees - Amazon.ae,Marketing,Amazon Services,6200.00,310.00,6510.00,,Yes
+2024-02-15,Annual fire safety inspection,Regulatory,Civil Defence,950.00,0.00,950.00,,No
+2024-02-18,Returns handling and restocking,Logistics,UPS UAE,2100.00,105.00,2205.00,100110099887766,Yes
+2024-02-20,Employee visa medicals x5,HR,Dubai Health Authority,2500.00,0.00,2500.00,,No
+2024-02-22,Accounting software - QuickBooks,IT/Software,Intuit,1600.00,80.00,1680.00,,Yes
+2024-02-25,Promotional discount vouchers issued,Marketing,Internal,5000.00,0.00,5000.00,,No
+2024-02-28,CCTV installation - warehouse,Security,Bosch Security UAE,8500.00,425.00,8925.00,100009988776655,Yes
+2024-03-03,Import freight charges - sea shipment,Logistics,DHL Global Forwarding,14500.00,725.00,15225.00,100998877665544,Yes
+2024-03-06,Car service - owner personal vehicle,Personal,Al-Futtaim Automotive,3800.00,190.00,3990.00,,No

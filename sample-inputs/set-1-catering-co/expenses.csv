@@ -1,0 +1,26 @@
+Date,Description,Category,Vendor,Amount (AED),VAT Amount (AED),Total (AED),VAT TRN,Recoverable
+2024-01-03,Commercial kitchen gas supply,Utilities,Emirates Gas LLC,1200.00,60.00,1260.00,100234567890123,Yes
+2024-01-05,Staff uniforms and aprons,Staff Costs,Dubai Workwear Supplies,880.00,44.00,924.00,100345678901234,Yes
+2024-01-08,Raw food ingredients - vegetables & meat,Cost of Goods,Al Mina Wholesale Market,6500.00,325.00,6825.00,100456789012345,Yes
+2024-01-10,Office stationery and printing,Office Supplies,Office Depot UAE,230.00,11.50,241.50,100567890123456,Yes
+2024-01-12,Monthly DEWA electricity bill,Utilities,DEWA,4100.00,205.00,4305.00,100012345678901,Yes
+2024-01-14,Staff meal allowances,Staff Costs,Various,950.00,47.50,997.50,,Partial
+2024-01-15,Marketing flyers and brochures,Marketing,Print Zone LLC,1450.00,72.50,1522.50,100678901234567,Yes
+2024-01-18,Catering van fuel,Transport,ENOC,3200.00,160.00,3360.00,100789012345678,Yes
+2024-01-20,Commercial refrigerator repair,Equipment Maintenance,Cool Fix Services,780.00,39.00,819.00,100890123456789,Yes
+2024-01-22,Event venue rental - corporate event,Event Costs,Jumeirah Events Centre,15000.00,750.00,15750.00,100901234567890,Yes
+2024-01-25,Food safety inspection fee,Regulatory,Dubai Municipality,500.00,0.00,500.00,,No
+2024-01-28,Social media advertising,Marketing,Meta Platforms,2200.00,110.00,2310.00,,Yes
+2024-02-01,Raw food ingredients - seafood,Cost of Goods,Fisherman's Wharf LLC,8900.00,445.00,9345.00,100234567890123,Yes
+2024-02-05,Catering equipment - chafing dishes,Equipment,Catering World LLC,3400.00,170.00,3570.00,100345678901234,Yes
+2024-02-08,Monthly van insurance,Insurance,AXA Insurance UAE,1200.00,0.00,1200.00,,No
+2024-02-10,Staff overtime payments,Staff Costs,Payroll,7500.00,0.00,7500.00,,No
+2024-02-12,Disposable packaging supplies,Consumables,Pack Pro UAE,2100.00,105.00,2205.00,100456789012345,Yes
+2024-02-15,Google Ads campaign,Marketing,Google LLC,1800.00,90.00,1890.00,,Yes
+2024-02-18,Trade license renewal,Regulatory,DED,3500.00,0.00,3500.00,,No
+2024-02-20,Cleaning and sanitization supplies,Consumables,Hygiene Hub LLC,640.00,32.00,672.00,100567890123456,Yes
+2024-02-22,Staff training - food hygiene course,Training,Food Safety Academy,1500.00,75.00,1575.00,100678901234567,Yes
+2024-02-25,Mobile internet plan - operations team,Communication,Etisalat,450.00,22.50,472.50,100789012345678,Yes
+2024-02-28,Personal groceries for owner (non-business),Personal,Carrefour,,,,No
+2024-03-02,Beverage supplies - soft drinks & juices,Cost of Goods,Pepsi Beverages UAE,4200.00,210.00,4410.00,100890123456789,Yes
+2024-03-05,Accounting software subscription,IT/Software,Zoho Books,800.00,40.00,840.00,100901234567890,Yes

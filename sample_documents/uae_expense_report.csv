@@ -1,0 +1,5 @@
+Date,Invoice Ref,Supplier,Supplier TRN,Description,Net Amount,VAT Rate,VAT Amount,Gross Amount,VAT Claimed
+2026-06-01,INV-1102,Abu Dhabi Office Rents,100223344500003,Q2 Office Rent,50000.00,5%,2500.00,52500.00,Yes
+2026-06-05,INV-4829,Etisalat,100112233400003,Business Internet,800.00,5%,40.00,840.00,Yes
+2026-06-10,INV-9901,Carluccio's Dubai,100445566700003,Client Hospitality Lunch,1500.00,5%,75.00,1575.00,Yes
+2026-06-12,INV-0048,Carrefour UAE,100778899000003,Office Pantry Coffee,300.00,5%,15.00,315.00,Yes
