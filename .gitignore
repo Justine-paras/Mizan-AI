@@ -1,3 +1,6 @@
+# AI assistant workspace files (not part of the app)
+.agents/
+
 # dependencies
 /node_modules
 /.pnp
