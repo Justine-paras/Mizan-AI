@@ -154,11 +154,11 @@ export default function ReportPreview({ reportUrl: initialReportUrl, analysisId 
         </Button>
 
         {reportUrl && (
-          <Button variant="secondary" size="md" asChild>
-            <a href={reportUrl} target="_blank" rel="noreferrer" download>
+          <a href={reportUrl} target="_blank" rel="noreferrer" download>
+            <Button variant="secondary" size="md" type="button">
               Download PDF
-            </a>
-          </Button>
+            </Button>
+          </a>
         )}
 
         <Button variant="ghost" size="md" onClick={() => window.location.href = `/dashboard/${analysisId}`}>
