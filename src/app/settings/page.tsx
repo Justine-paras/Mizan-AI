@@ -25,6 +25,12 @@ export default function SettingsPage() {
     message: string;
   } | null>(null);
 
+  const [serverStatus, setServerStatus] = useState<{
+    geminiConfigured: boolean;
+    supabaseConfigured: boolean;
+    isLocalDev: boolean;
+  } | null>(null);
+
   useEffect(() => {
     setSettings(getLocalStorageSettings());
     
@@ -34,6 +40,7 @@ export default function SettingsPage() {
         if (res.ok) {
           const data = await res.json();
           setIsLocalDev(data.isLocalDev);
+          setServerStatus(data);
         }
       } catch (err) {
         console.warn("Failed to fetch settings status:", err);
@@ -41,6 +48,8 @@ export default function SettingsPage() {
     }
     checkStatus();
   }, []);
+
+  const allConfigured = serverStatus?.geminiConfigured && serverStatus?.supabaseConfigured;
 
   const handleToggleShow = (field: keyof typeof showKeys) => {
     setShowKeys((prev) => ({ ...prev, [field]: !prev[field] }));
@@ -146,9 +155,25 @@ export default function SettingsPage() {
           )}
           <h1 className="t-display">Settings</h1>
           <p className="t-body mt-1">
-            Configure custom API keys and database integrations. These browser overrides let you isolate tests or run compliance analyses against custom backend services.
+            {allConfigured
+              ? "All services are pre-configured and ready to use. You can optionally override with your own keys below."
+              : "Configure custom API keys and database integrations. These browser overrides let you isolate tests or run compliance analyses against custom backend services."
+            }
           </p>
         </div>
+
+        {/* Pre-configured Status Banner */}
+        {serverStatus !== null && allConfigured && (
+          <div className="mb-6 p-4 rounded-xl border bg-success/10 border-success/20 text-success text-xs flex gap-3 animate-slide-up">
+            <span className="text-sm mt-0.5">✓</span>
+            <div className="flex-1">
+              <p className="font-semibold text-text-primary mb-1">All Systems Operational</p>
+              <p className="text-text-secondary leading-relaxed">
+                Gemini AI and Supabase are pre-configured on the server. No additional setup is needed — you can start uploading documents and running compliance analysis immediately.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Notifications */}
         {notification && (

@@ -662,23 +662,24 @@ export default function UploadPage() {
               </p>
             </div>
 
-            {/* Setup Warning Banner */}
+            {/* Setup Warning Banner — only shows when server env vars are missing (self-hosted / local dev) */}
             {serverStatus !== null && !isConfigured && (
-              <div className="mb-6 p-4 rounded-xl border bg-critical/10 border-critical/20 text-critical text-xs flex gap-3 animate-slide-up">
-                <span className="text-sm mt-0.5">⚠️</span>
+              <div className="mb-6 p-4 rounded-xl border bg-warning/10 border-warning/20 text-warning text-xs flex gap-3 animate-slide-up">
+                <span className="text-sm mt-0.5">⚙️</span>
                 <div className="flex-1">
-                  <p className="font-semibold text-text-primary mb-1">Configuration Required</p>
+                  <p className="font-semibold text-text-primary mb-1">Setup Needed</p>
                   <p className="text-text-secondary leading-relaxed mb-2.5">
-                    To analyze compliance and execute checks, you must configure Gemini API keys and Supabase database credentials.
-                    {!isGeminiConfigured && !isSupabaseConfigured && " Both Gemini and Supabase settings are currently missing."}
-                    {!isGeminiConfigured && isSupabaseConfigured && " Gemini API Key is missing."}
-                    {isGeminiConfigured && !isSupabaseConfigured && " Supabase database configuration is missing."}
+                    Server API keys are not yet configured.
+                    {!isGeminiConfigured && !isSupabaseConfigured && " Both Gemini AI and Supabase credentials need to be set."}
+                    {!isGeminiConfigured && isSupabaseConfigured && " A Gemini API key is needed."}
+                    {isGeminiConfigured && !isSupabaseConfigured && " Supabase database credentials are needed."}
+                    {" "}You can add your own keys in Settings, or ask the project admin to configure server environment variables.
                   </p>
                   <Link
                     href="/settings"
                     className="inline-flex items-center gap-1 text-accent hover:underline font-semibold transition-colors"
                   >
-                    Configure Settings →
+                    Open Settings →
                   </Link>
                 </div>
               </div>
