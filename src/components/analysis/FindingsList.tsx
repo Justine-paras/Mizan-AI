@@ -86,21 +86,37 @@ function FindingRow({ finding, index }: { finding: Issue; index: number }) {
   );
 }
 
-export default function FindingsList({ findings }: FindingsListProps) {
-  const sorted = [...findings].sort((a, b) => {
+export default function FindingsList({ findings = [] }: FindingsListProps) {
+  const safeFindings = Array.isArray(findings) ? findings : [];
+
+  const sorted = [...safeFindings].sort((a, b) => {
     const order = { high: 0, medium: 1, low: 2 };
-    return order[a.severity] - order[b.severity];
+    const aOrder = order[a?.severity || "medium"] ?? 1;
+    const bOrder = order[b?.severity || "medium"] ?? 1;
+    return aOrder - bOrder;
   });
 
   return (
     <div className="flex flex-col gap-2 animate-slide-up">
       <div className="flex items-center justify-between mb-2">
         <p className="t-subheading">Findings</p>
-        <p className="t-caption">{findings.length} total</p>
+        <p className="t-caption">{safeFindings.length} total</p>
       </div>
-      {sorted.map((f, i) => (
-        <FindingRow key={i} finding={f} index={i} />
-      ))}
+      {safeFindings.length > 0 ? (
+        sorted.map((f, i) => (
+          <FindingRow key={i} finding={f} index={i} />
+        ))
+      ) : (
+        <div className="border border-border bg-bg-surface/50 rounded-xl p-8 text-center flex flex-col items-center justify-center gap-3">
+          <span className="text-2xl">🎉</span>
+          <div>
+            <h4 className="text-xs font-semibold text-text-primary">No Compliance Findings</h4>
+            <p className="text-[10px] text-text-secondary mt-1 leading-relaxed max-w-xs">
+              No compliance issues or tax calculation risks were identified in this audit. All files matched FTA criteria perfectly.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { runComplianceRules } from "@/lib/compliance/rules";
 
 // GET /api/analyze?id=...
 // Retrieve analysis record by ID (runs on server to bypass client RLS issues)
+// If no ID is provided, lists all analyses with document name and created_at timestamps.
 export async function GET(request: NextRequest) {
   try {
     const supabase = getSupabaseServer(request);
@@ -13,7 +14,38 @@ export async function GET(request: NextRequest) {
     const id = searchParams.get("id");
 
     if (!id) {
-      return NextResponse.json({ error: "No analysis ID provided" }, { status: 400 });
+      const { data, error } = await supabase
+        .from("analyses")
+        .select(`
+          id,
+          score,
+          risk,
+          summary,
+          document_id,
+          documents (
+            name,
+            created_at
+          )
+        `);
+
+      if (error) {
+        console.error("Error listing analyses:", error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+      }
+
+      const list = (data || []).map((item: any) => ({
+        id: item.id,
+        score: item.score,
+        risk: item.risk,
+        summary: item.summary,
+        documentName: item.documents?.name || "Unnamed Document",
+        createdAt: item.documents?.created_at || new Date().toISOString()
+      }));
+
+      // Sort by date descending
+      list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+      return NextResponse.json(list);
     }
 
     const { data, error } = await supabase

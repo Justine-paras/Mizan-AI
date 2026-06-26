@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { getSettingsHeaders } from "@/lib/settings";
 
 // ─── Icons (inline SVGs — no icon library dependency) ────────────────────────
 
@@ -74,6 +76,58 @@ const navItems = [
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [audits, setAudits] = useState<{ id: string; documentName: string; score: number; createdAt: string; risk: string }[]>([]);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  // Parse out the active ID from pathname if present (e.g. /dashboard/uuid -> uuid)
+  const idMatch = pathname.match(/\/(dashboard|analysis|chat|report)\/([a-f0-9-]+)/i);
+  const currentId = idMatch ? idMatch[2] : null;
+
+  useEffect(() => {
+    async function loadAudits() {
+      try {
+        const res = await fetch("/api/analyze", {
+          headers: getSettingsHeaders(),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setAudits(data);
+          
+          if (currentId) {
+            setSelectedId(currentId);
+          } else {
+            const stored = localStorage.getItem("latest_analysis_id");
+            if (stored) {
+              setSelectedId(stored);
+            } else if (data.length > 0) {
+              setSelectedId(data[0].id);
+              localStorage.setItem("latest_analysis_id", data[0].id);
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Failed to load audits for sidebar list:", err);
+      }
+    }
+    loadAudits();
+  }, [currentId]);
+
+  const currentAudit = audits.find(a => a.id === selectedId) || audits[0] || null;
+
+  const handleSwitchAudit = (id: string) => {
+    setSelectedId(id);
+    localStorage.setItem("latest_analysis_id", id);
+    setDropdownOpen(false);
+    
+    if (idMatch) {
+      const route = idMatch[1];
+      router.push(`/${route}/${id}`);
+    } else {
+      router.push(`/dashboard/${id}`);
+    }
+  };
 
   return (
     <div className="flex h-screen overflow-hidden bg-bg-base">
@@ -90,6 +144,65 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             />
           </Link>
         </div>
+
+        {/* Audit Record Switcher */}
+        {audits.length > 0 && (
+          <div className="px-3 py-3 border-b border-border bg-white/[0.01] relative select-none">
+            <label className="text-[9px] font-bold text-text-tertiary uppercase tracking-wider block mb-1">
+              Active Audit Record
+            </label>
+            <div className="relative">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="w-full flex items-center justify-between px-3 py-2 bg-bg-elevated hover:bg-bg-elevated/80 border border-border hover:border-border-strong rounded-lg text-left transition-all cursor-pointer"
+              >
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-text-primary truncate">
+                    {currentAudit?.documentName || "Select Audit..."}
+                  </p>
+                  {currentAudit && (
+                    <p className="text-[10px] text-text-secondary mt-0.5 flex items-center gap-1.5">
+                      <span className={`w-1.5 h-1.5 rounded-full ${
+                        currentAudit.risk === "high" ? "bg-critical" : currentAudit.risk === "medium" ? "bg-warning" : "bg-success"
+                      }`} />
+                      Score: {currentAudit.score}/100
+                    </p>
+                  )}
+                </div>
+                <svg
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  className={cn("w-3.5 h-3.5 text-text-tertiary transition-transform ml-1 flex-shrink-0", dropdownOpen && "rotate-180")}
+                >
+                  <path d="M4 6l4 4 4-4" />
+                </svg>
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute left-0 right-0 mt-1.5 bg-bg-surface border border-border rounded-lg shadow-xl z-50 max-h-48 overflow-y-auto py-1 scrollbar-thin">
+                  {audits.map((audit) => (
+                    <button
+                      key={audit.id}
+                      onClick={() => handleSwitchAudit(audit.id)}
+                      className={cn(
+                        "w-full text-left px-3 py-2 text-xs transition-colors hover:bg-white/[0.03] flex flex-col gap-0.5",
+                        audit.id === selectedId ? "bg-accent/5 text-accent font-semibold" : "text-text-secondary"
+                      )}
+                    >
+                      <span className="truncate block font-medium text-text-primary">{audit.documentName}</span>
+                      <div className="flex items-center justify-between text-[9px] text-text-tertiary font-mono">
+                        <span>Score: {audit.score}/100</span>
+                        <span>{new Date(audit.createdAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Nav */}
         <nav className="flex-1 px-2 py-3 space-y-0.5">
