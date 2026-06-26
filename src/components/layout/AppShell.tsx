@@ -40,6 +40,15 @@ function FileIcon({ className }: { className?: string }) {
   );
 }
 
+function BookIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 16 16" fill="none" strokeWidth="1.5" stroke="currentColor">
+      <path d="M2.5 3A1.5 1.5 0 014 1.5h8A1.5 1.5 0 0113.5 3v10a1.5 1.5 0 01-1.5 1.5H4A1.5 1.5 0 012.5 13V3z" strokeLinejoin="round" />
+      <path d="M5.5 1.5V13M9.5 4h2M9.5 6.5h2M9.5 9h2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function SettingsIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 16 16" fill="none" strokeWidth="1.5" stroke="currentColor">
@@ -53,11 +62,12 @@ function SettingsIcon({ className }: { className?: string }) {
 // ─── Nav items ────────────────────────────────────────────────────────────────
 
 const navItems = [
-  { label: "Upload",    href: "/upload",    icon: UploadIcon },
-  { label: "Analysis",  href: "/analysis",  icon: ShieldIcon },
-  { label: "Chat",      href: "/chat",      icon: ChatIcon   },
-  { label: "Report",    href: "/report",    icon: FileIcon   },
-  { label: "Settings",  href: "/settings",  icon: SettingsIcon },
+  { label: "Upload",      href: "/upload",      icon: UploadIcon },
+  { label: "Analysis",    href: "/analysis",    icon: ShieldIcon },
+  { label: "Chat",        href: "/chat",        icon: ChatIcon   },
+  { label: "Report",      href: "/report",      icon: FileIcon   },
+  { label: "Regulations", href: "/regulations", icon: BookIcon   },
+  { label: "Settings",    href: "/settings",    icon: SettingsIcon },
 ];
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────

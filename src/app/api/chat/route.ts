@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSupabaseServer } from "@/lib/supabase/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import fs from "fs";
+import path from "path";
 
 const gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
@@ -9,6 +11,17 @@ export async function POST(request: NextRequest) {
     const supabase = getSupabaseServer(request);
     const customGeminiKey = request.headers.get("x-gemini-api-key");
     const geminiClient = customGeminiKey ? new GoogleGenerativeAI(customGeminiKey) : gemini;
+
+    // Load official regulations document if available
+    let regulationBase64 = "";
+    try {
+      const pdfPath = path.join(process.cwd(), "public", "uae-vat-regulations.pdf");
+      if (fs.existsSync(pdfPath)) {
+        regulationBase64 = fs.readFileSync(pdfPath).toString("base64");
+      }
+    } catch (err) {
+      console.warn("Failed to load uae-vat-regulations.pdf for chat grounding:", err);
+    }
 
     const { analysisId, messages } = await request.json();
 
@@ -70,7 +83,7 @@ ${issuesListText || "No issues detected."}
 
 CORE INSTRUCTIONS:
 1. Provide helpful, expert compliance guidance specifically tailored to the audit details.
-2. Back all explanations with the UAE VAT Law (Decree-Law No. 8 of 2017) and official FTA guidelines.
+2. Back all explanations with the UAE VAT Law (Decree-Law No. 8 of 2017) and the attached official UAE VAT Executive Regulation PDF. Cite specific Articles and Clauses from the regulations PDF (e.g., Article 53 for entertainment/hospitality deductibility restrictions, Article 59 for simplified vs full invoice requirements) to support your answers.
 3. Be concise, executive-focused, and friendly but strictly professional.
 4. If asked about items not covered in the audit report, answer generally but state: "This detail is not present in your uploaded documents. According to general FTA regulations..."
 5. Do NOT hallucinate data or values. If they are not in the audit report or user query, do not assume them.
@@ -81,7 +94,34 @@ CORE INSTRUCTIONS:
     const rawHistory = messages.slice(0, -1); // all messages except the last one (which is the new prompt)
     const newPrompt = messages[messages.length - 1]?.content || "";
 
-    const history: { role: "user" | "model"; parts: { text: string }[] }[] = [];
+    const history: { role: "user" | "model"; parts: any[] }[] = [];
+
+    // Prepend the regulation PDF turns if available
+    if (regulationBase64) {
+      history.push({
+        role: "user",
+        parts: [
+          {
+            inlineData: {
+              data: regulationBase64,
+              mimeType: "application/pdf"
+            }
+          },
+          {
+            text: "Attached is the official UAE VAT Regulations PDF (Executive Regulation of the Federal Decree-Law No. 8 of 2017 on Value Added Tax). Please use this document to ground all your explanations and cite specific Articles when answering my compliance questions."
+          }
+        ]
+      });
+      history.push({
+        role: "model",
+        parts: [
+          {
+            text: "I have received the official UAE VAT Regulations PDF. I will ground my analysis in it and cite specific Articles (such as Article 53 or 59) to back all my compliance guidance."
+          }
+        ]
+      });
+    }
+
     let foundFirstUser = false;
     
     for (const msg of rawHistory) {

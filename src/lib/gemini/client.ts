@@ -1,5 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { ExtractedDocument } from "../extraction/extractPdf";
+import fs from "fs";
+import path from "path";
 
 export const gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
@@ -30,7 +32,8 @@ You must prioritize accuracy over completeness or speed.
    - Data Extraction -> Classification -> FTA Rule Mapping -> Computation -> Final Assessment
 
 4. UAE FTA Compliance Requirement
-   All interpretations must align with UAE VAT Law (Federal Decree-Law No. 8 of 2017), Input/Output VAT rules, Valid tax invoice requirements, Deductibility rules, and the standard rate (5%) unless zero-rated/exempt.
+   All interpretations must align with UAE VAT Law and the attached official regulation document "uae-vat-regulations.pdf" (Executive Regulation of the Federal Decree-Law No. 8 of 2017 on Value Added Tax).
+   You MUST cite specific Articles (e.g. Article 53 for entertainment, Article 59 for invoice requirements, Article 7 for mandatory registration) and Clause numbers in your detailed report and issues array to support every compliance gap or recommendation.
    If uncertain, say: "Requires manual verification under FTA guidelines"
 
 5. Strict Calculation Integrity
@@ -181,6 +184,20 @@ export async function analyzeDocumentsWithGemini(files: ExtractedDocument[], cus
 
   const client = customApiKey ? new GoogleGenerativeAI(customApiKey) : gemini;
 
+  // 1. Try to load the official UAE VAT Regulation PDF
+  let regulationBase64 = "";
+  try {
+    const pdfPath = path.join(process.cwd(), "public", "uae-vat-regulations.pdf");
+    if (fs.existsSync(pdfPath)) {
+      regulationBase64 = fs.readFileSync(pdfPath).toString("base64");
+      console.log("Loaded official uae-vat-regulations.pdf reference document for Gemini analysis.");
+    } else {
+      console.warn("Reference uae-vat-regulations.pdf not found in public folder");
+    }
+  } catch (err) {
+    console.warn("Failed to load uae-vat-regulations.pdf reference document:", err);
+  }
+
   // Valid model names for Gemini API v1beta — ordered by capability (best first)
   // gemini-2.x models require billing; gemini-1.5-flash/pro work on free tier
   const modelsToTry = [
@@ -200,15 +217,37 @@ export async function analyzeDocumentsWithGemini(files: ExtractedDocument[], cus
         systemInstruction: SYSTEM_PROMPT,
       });
 
-      const parts = files.map(file => ({
-        inlineData: {
-          data: file.base64,
-          mimeType: file.mimeType,
-        }
-      }));
+      const parts = [];
+
+      // Prepend regulation reference document if available
+      if (regulationBase64) {
+        parts.push({
+          inlineData: {
+            data: regulationBase64,
+            mimeType: "application/pdf"
+          }
+        });
+      }
+
+      // Add user uploaded documents
+      files.forEach(file => {
+        parts.push({
+          inlineData: {
+            data: file.base64,
+            mimeType: file.mimeType,
+          }
+        });
+      });
+
+      const documentNames = files.map(f => f.fileName).join(", ");
+      let promptText = `Perform a UAE VAT compliance audit on the attached financial documents: ${documentNames}. `;
+      if (regulationBase64) {
+        promptText += `You must reference and cross-check the financial data against the attached official regulatory source 'uae-vat-regulations.pdf'. `;
+      }
+      promptText += `Identify VAT calculation errors, missing TRNs, incorrect formats, or non-recoverable input tax claims (e.g. hospitality, entertainment, personal expenses). For each issue identified, cite the specific Article and Clause from the regulation PDF. IMPORTANT: Keep your detailed_report under 500 words to prevent JSON truncation.`;
 
       parts.push({
-        text: `Perform a UAE VAT compliance audit on the attached documents: ${files.map(f => f.fileName).join(", ")}. Identify VAT calculation errors, missing TRNs, incorrect formats, or non-recoverable input tax claims (e.g. hospitality, entertainment, personal expenses). IMPORTANT: Keep your detailed_report under 500 words to prevent JSON truncation.`,
+        text: promptText,
       } as any);
 
       const result = await model.generateContent({
