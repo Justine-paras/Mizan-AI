@@ -35,12 +35,12 @@ Mizan AI is built with modern, scalable, and fast web technologies, designed to 
 
 ```mermaid
 graph TD
-    A[User Uploads Documents] --> B[Supabase Storage]
-    B --> C[Gemini AI Extraction & Analysis]
-    C --> D[Compliance Rules Engine]
-    D --> E[Supabase DB (Save Analysis)]
-    E --> F[Dashboard & Risk Report]
-    F --> G[Interactive Chat / PDF Export]
+    A["User Uploads Documents"] --> B["Supabase Storage"]
+    B --> C["Gemini AI Extraction & Analysis"]
+    C --> D["Compliance Rules Engine"]
+    D --> E["Supabase DB (Save Analysis)"]
+    E --> F["Dashboard & Risk Report"]
+    F --> G["Interactive Chat / PDF Export"]
 ```
 
 ---
@@ -61,7 +61,9 @@ npm install
 ```
 
 ### 3. Configure Environment Variables
-Copy the example `.env` file or create a `.env.local` in the root of the project. You can also configure this dynamically via the UI in Local Development mode.
+*(Note: If you are viewing the live demo on Vercel, all environment variables are already pre-configured for you!)*
+
+For local development, copy the example `.env` file or create a `.env.local` in the root of the project. You can also configure this dynamically via the UI in Local Development mode.
 ```env
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
