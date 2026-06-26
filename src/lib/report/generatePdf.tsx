@@ -410,7 +410,7 @@ export async function generatePdf(input: ReportInput): Promise<Buffer> {
       analysis,
       shortSummary,
       detailedReport
-    })
+    }) as any
   );
 
   return buffer;

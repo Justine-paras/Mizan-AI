@@ -3,10 +3,17 @@ import { createClient, SupabaseClient } from "@supabase/supabase-js";
 const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const supabaseUrl = rawUrl.replace(/\/rest\/v1\/?$/, "");
 
-export const supabaseBrowser = createClient(
-  supabaseUrl,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+let _supabaseBrowser: SupabaseClient | null = null;
+
+function getDefaultSupabaseBrowser(): SupabaseClient {
+  if (!_supabaseBrowser) {
+    _supabaseBrowser = createClient(
+      supabaseUrl,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+  }
+  return _supabaseBrowser;
+}
 
 export function getSupabaseBrowser(): SupabaseClient {
   if (typeof window !== "undefined") {
@@ -17,7 +24,7 @@ export function getSupabaseBrowser(): SupabaseClient {
       return createClient(cleanUrl, customKey);
     }
   }
-  return supabaseBrowser;
+  return getDefaultSupabaseBrowser();
 }
 
 

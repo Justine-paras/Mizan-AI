@@ -4,10 +4,17 @@ import { NextRequest } from "next/server";
 const rawUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
 const supabaseUrl = rawUrl.replace(/\/rest\/v1\/?$/, "");
 
-export const supabaseServer = createClient(
-  supabaseUrl,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+let _supabaseServer: SupabaseClient | null = null;
+
+export function getDefaultSupabaseServer(): SupabaseClient {
+  if (!_supabaseServer) {
+    _supabaseServer = createClient(
+      supabaseUrl,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+  }
+  return _supabaseServer;
+}
 
 export function getSupabaseServer(request?: NextRequest | Headers): SupabaseClient {
   let url = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -23,7 +30,7 @@ export function getSupabaseServer(request?: NextRequest | Headers): SupabaseClie
 
   const cleanUrl = url.replace(/\/rest\/v1\/?$/, "");
   if (!cleanUrl || !key) {
-    return supabaseServer;
+    return getDefaultSupabaseServer();
   }
 
   return createClient(cleanUrl, key);

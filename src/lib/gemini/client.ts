@@ -215,7 +215,7 @@ export async function analyzeDocumentsWithGemini(files: ExtractedDocument[], cus
         contents: [{ role: "user", parts }],
         generationConfig: {
           responseMimeType: "application/json",
-          responseSchema: schema,
+          responseSchema: schema as any,
           temperature: 0.1,
           maxOutputTokens: 4096,
         }

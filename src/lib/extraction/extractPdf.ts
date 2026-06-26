@@ -1,4 +1,4 @@
-import { supabaseServer } from "@/lib/supabase/server";
+import { getDefaultSupabaseServer } from "@/lib/supabase/server";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 export interface ExtractedDocument {
@@ -13,7 +13,7 @@ export interface ExtractedDocument {
  * @param supabaseClient - Supabase client to use for downloading the document
  * @returns Extracted document structure with base64 data
  */
-export async function extractPdf(url: string, supabaseClient: SupabaseClient = supabaseServer): Promise<ExtractedDocument> {
+export async function extractPdf(url: string, supabaseClient: SupabaseClient = getDefaultSupabaseServer()): Promise<ExtractedDocument> {
   // Extract storage path from the public URL
   // E.g. https://.../storage/v1/object/public/documents/invoice/uuid-filename.pdf
   const parts = url.split("/documents/");
