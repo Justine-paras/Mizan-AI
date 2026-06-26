@@ -9,7 +9,18 @@ import { runComplianceRules } from "@/lib/compliance/rules";
 // If no ID is provided, lists all analyses with document name and created_at timestamps.
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getSupabaseServer(request);
+    let supabase;
+    try {
+      supabase = getSupabaseServer(request);
+    } catch (err: any) {
+      console.warn("Supabase server connection not configured:", err.message || err);
+      const { searchParams } = new URL(request.url);
+      const id = searchParams.get("id");
+      if (!id) {
+        return NextResponse.json([]);
+      }
+      return NextResponse.json({ error: "Supabase database connection not configured." }, { status: 400 });
+    }
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
 
